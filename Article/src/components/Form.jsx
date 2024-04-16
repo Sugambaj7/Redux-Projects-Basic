@@ -26,7 +26,10 @@ const Form = () => {
       {/* <span>{articleState}</span> */}
       <button
         type="submit"
-        onClick={() => dispatch(addArticle(article))}
+        // onClick={() => dispatch(addArticle(article))}
+        onClick={() =>
+          dispatch({ type: "ADD_ARTICLE", payload: { text: article } })
+        }
         className="bg-blue-500 text-white px-3 py-1 mt-2"
       >
         Save
