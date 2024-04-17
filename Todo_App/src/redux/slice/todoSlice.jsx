@@ -22,19 +22,26 @@ const todoSlice = createSlice({
       id: 4,
       title: "todo4",
       completed: true,
-    }
+    },
   ],
-  reducers:{
-    addTodo: (state, action) =>{
-        const newTodo = {
-            id: Date.now(),
-            title: action.payload.title,
-            completed: false
-        }
-        state.push(newTodo);
-    }
-  }
+  reducers: {
+    addTodo: (state, action) => {
+      const newTodo = {
+        id: Date.now(),
+        title: action.payload.title,
+        completed: false,
+      };
+      state.push(newTodo);
+    },
+    toggleComplete: (state, action) => {
+      const index = state.findIndex((todo) => todo.id === action.payload.id);
+      state[index].completed = action.payload.completed;
+    },
+    deleteTodo: (state, action) => {
+      return state.filter((todo) => todo.id !== action.payload.id);
+    },
+  },
 });
 
 export default todoSlice.reducer;
-export const { addTodo } = todoSlice.actions;
+export const { addTodo, toggleComplete, deleteTodo } = todoSlice.actions;
