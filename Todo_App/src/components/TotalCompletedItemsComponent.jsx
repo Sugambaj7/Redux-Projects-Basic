@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 const TotalCompletedItemsComponent = () => {
   const completedTodos = useSelector((state) =>
-    state.todos.filter((todo) => todo.completed === true)
+    state.todos.data.filter((todo) => todo.completed === true)
   );
   return (
     <div className="m-4 flex">

@@ -1,29 +1,39 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
+export const fetchTodos = createAsyncThunk("fetchtodos", async () => {
+  const response = await fetch(
+    "https://jsonplaceholder.typicode.com/todos?_limit=5"
+  );
+  return response.json();
+});
 
 const todoSlice = createSlice({
   name: "todos",
-  initialState: [
-    {
-      id: 1,
-      title: "todo1",
-      completed: false,
-    },
-    {
-      id: 2,
-      title: "todo2",
-      completed: false,
-    },
-    {
-      id: 3,
-      title: "todo3",
-      completed: true,
-    },
-    {
-      id: 4,
-      title: "todo4",
-      completed: true,
-    },
-  ],
+  initialState: {
+    isLoading: false,
+    isError: false,
+    data: [],
+  },
+  // {
+  //   id: 1,
+  //   title: "todo1",
+  //   completed: false,
+  // },
+  // {
+  //   id: 2,
+  //   title: "todo2",
+  //   completed: false,
+  // },
+  // {
+  //   id: 3,
+  //   title: "todo3",
+  //   completed: true,
+  // },
+  // {
+  //   id: 4,
+  //   title: "todo4",
+  //   completed: true,
+  // },
   reducers: {
     addTodo: (state, action) => {
       const newTodo = {
@@ -31,15 +41,27 @@ const todoSlice = createSlice({
         title: action.payload.title,
         completed: false,
       };
-      state.push(newTodo);
+      state.data.push(newTodo);
     },
     toggleComplete: (state, action) => {
-      const index = state.findIndex((todo) => todo.id === action.payload.id);
-      state[index].completed = action.payload.completed;
+      const index = state.data.findIndex((todo) => todo.id === action.payload.id);
+      state.data[index].completed = action.payload.completed;
     },
     deleteTodo: (state, action) => {
-      return state.filter((todo) => todo.id !== action.payload.id);
+      state.data = state.data.filter((todo) => todo.id !== action.payload.id);
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchTodos.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.data = action.payload;
+    });
+    builder.addCase(fetchTodos.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(fetchTodos.rejected, (state, action) => {
+      state.isError = true;
+    });
   },
 });
 
