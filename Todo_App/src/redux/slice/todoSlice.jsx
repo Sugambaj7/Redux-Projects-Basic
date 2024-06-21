@@ -14,26 +14,7 @@ const todoSlice = createSlice({
     isError: false,
     data: [],
   },
-  // {
-  //   id: 1,
-  //   title: "todo1",
-  //   completed: false,
-  // },
-  // {
-  //   id: 2,
-  //   title: "todo2",
-  //   completed: false,
-  // },
-  // {
-  //   id: 3,
-  //   title: "todo3",
-  //   completed: true,
-  // },
-  // {
-  //   id: 4,
-  //   title: "todo4",
-  //   completed: true,
-  // },
+
   reducers: {
     addTodo: (state, action) => {
       const newTodo = {
@@ -44,7 +25,9 @@ const todoSlice = createSlice({
       state.data.push(newTodo);
     },
     toggleComplete: (state, action) => {
-      const index = state.data.findIndex((todo) => todo.id === action.payload.id);
+      const index = state.data.findIndex(
+        (todo) => todo.id === action.payload.id
+      );
       state.data[index].completed = action.payload.completed;
     },
     deleteTodo: (state, action) => {
